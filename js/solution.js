@@ -14,7 +14,7 @@
 
         var leftField, //соседнее левое поле на карте
             upField, // соседнее правое поле на карте
-            numOfIslands; // кол-во островов
+            numOfIslands = 0; // кол-во островов
 
         /* Массив в котором будем искать и считать количество островов. 
         Изначально он заполнен нулями. Размерность как у map*/
@@ -38,26 +38,38 @@
                 if (i != 0) upField = countingMap[i - 1][j]; //если i не самое поле, то берем значение поля выше(номер острова) из массива количества островов
 
                 if (leftField == 0 && upField == 0) { //если слева и сверху островов нету, то это новый остров
-                    countingMap[i][j] = groupList;
-                    groupList.push(groupList);
-                    groupList++;
+                    countingMap[i][j] = groupNum;
+                    groupList.push(groupNum);
+                    groupNum++;
                 }
                 else if (leftField != 0 & upField != 0) {
-                    if (leftField > upField) { //если одно значение больше, чем другое, то берем номер острова с наименьшим индексом
+                    if (leftField > upField) { //если одно значение больше, чем другое, то берем номер острова с наименьшим индексом, при этом корректируем значение для массива количества островов(т.е. мы считали, что суша была независимым островом, а, на самом деле, она принаддежит к уже имеющемуся острову)
                         countingMap[i][j] = upField;
-                        groupList.push(upField);
+                        groupList[leftField] = upField;
                     }
                     else {
                         countingMap[i][j] = leftField;
-                        groupList.push(left);
+                        groupList[upField] = leftField;
                     }
+                }
+                // те случаи, когда одна из сторон принадлежит острову, а другая пустая, в массив количества правки не вносятся
+                else if (upField == 0) {
+                    countingMap[i][j] = leftField;
+                }
+                else {
+                    countingMap[i][j] = upField
                 }
             }
         }
 
+        for (var i = 1; i <= groupList.length; i++){
+            if (i == groupList[i]){
+                numOfIslands++;
+            }
+        }
+        
 
-
-        return 0;
+        return numOfIslands;
     }
 
     root.SHRI_ISLANDS.solution = solution;
