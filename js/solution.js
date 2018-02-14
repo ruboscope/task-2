@@ -59,18 +59,22 @@
                 else {
                     countingMap[i][j] = upField
                 }
+                root.SHRI_ISLANDS.visualizeSolution(countingMap, countOfIslands(groupList));
             }
         }
 
-        for (var i = 1; i <= groupList.length; i++){
-            if (i == groupList[i]){
-                numOfIslands++;
-            }
-        }
-        
-
+        numOfIslands = countOfIslands(groupList);
+        document.querySelector('.outer').appendChild(document.createElement('hr'));
         return numOfIslands;
     }
-
+    function countOfIslands(array) {
+        var count = 0;
+        for (var i = 1; i <= array.length; i++) {
+            if (i == array[i]) {
+                count++;
+            }
+        }
+        return count;
+    }
     root.SHRI_ISLANDS.solution = solution;
 })(this);
